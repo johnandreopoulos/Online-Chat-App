@@ -32,6 +32,7 @@ The Simple Chat App is not just a tool; it's a gateway to collaborative and live
 
 --- 
 
-![chrome_FlnmcxKclN](https://github.com/johnandreopoulos/Online-Chat-App/assets/39243722/10518abf-d335-4aca-b0be-2f8ff738a5dc)
+![chrome_FlnmcxKclN](https://github.com/johnandreopoulos/Online-Chat-App/assets/39243722/f665309d-7db7-40fc-bd94-c15f78c7d8e6)
+
 
 
