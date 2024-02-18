@@ -1,0 +1,137 @@
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      font-size: 1.5em;
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+    }
+
+    #user-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 200px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    #messages {
+      list-style: none;
+      padding: 0;
+      overflow-y: auto;
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+      border-left: 1px solid #ddd;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    #user-list li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    #user-list li .status-icon {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    #user-list li.online .status-icon {
+      background-color: #4CAF50;
+      /* Green color */
+    }
+
+    #form {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-top: 1px solid #ddd;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+
+    #photo-input {
+      margin-right: 8px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #99AAB5;
+    }
+
+    #messages li {
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    #messages li.user-message {
+      text-align: right;
+    }
+
+    #messages li.other-message {
+      text-align: left;
+    }
+
+    #messages li.user-message span {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 8px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    #messages li.other-message span {
+      background-color: #f2f2f2;
+      padding: 8px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    button.logout {
+      background-color: #d9534f;
+    }
+
+    button.logout:hover {
+      background-color: #c9302c;
+    }

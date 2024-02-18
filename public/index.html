@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Chat App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    Simple Chat App
+  </header>
+  <main>
+    <div id="user-list">
+      <h2>Online Users</h2>
+      <ul id="user-list"></ul>
+    </div>
+    <ul id="messages"></ul>
+  </main>
+  <form id="form">
+    <input id="message-input" autocomplete="off" placeholder="Type your message..." />
+    <button id="send-btn">Send</button>
+  </form>
+  <footer id="footer">
+    <script>
+      if (localStorage.getItem('username')) {
+        document.write(`Logged in as <span id="username"></span> <button onclick="logout()">Logout</button>`);
+      }
+    </script>
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    let username = localStorage.getItem('username');
+    while (!username || username === 'null') {
+      username = prompt('Enter your username');
+      if (localStorage.getItem('username') === username) username = prompt('Username already taken. Enter a different username');
+      localStorage.setItem('username', username);
+
+      if (username) {
+        document.getElementById('footer').innerHTML = `<span id="username">Loggin in as${username}</span> <button onclick="logout()">Logout</button>`;
+      }
+    }
+
+    socket.emit('new user', username);
+    console.log('username:', username);
+
+    document.getElementById('username').textContent = username;
+
+    document.getElementById('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const messageInput = document.getElementById('message-input');
+      const message = messageInput.value.trim();
+
+      if (message) {
+        socket.emit('message', message);
+        messageInput.value = '';
+      }
+    });
+
+    socket.on('message', function(data) {
+      const messages = document.getElementById('messages');
+      const li = document.createElement('li');
+
+      if (data.message) {
+        const span = document.createElement('span');
+        span.textContent = `${data.username === username ? '[You]' : data.username}: ${data.message}`;
+        li.appendChild(span);
+      }
+
+      if (data.message || data.imageDataUrl) {
+        if (data.username === username) {
+          li.classList.add('user-message');
+        } else {
+          li.classList.add('other-message');
+        }
+        messages.appendChild(li);
+      }
+    });
+
+    socket.on('error', function(error) {
+      const messages = document.getElementById('messages');
+      const li = document.createElement('li');
+
+      const span = document.createElement('span');
+      span.textContent = error;
+      li.appendChild(span);
+    });
+
+    socket.on('previous messages', function(previousMessages) {
+      // refresh page to see previous messages
+      document.getElementById('messages').innerHTML = '';
+      const messages = document.getElementById('messages');
+      previousMessages.map(message => {
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        span.textContent = `${message.username === username ? '[You]' : message.username}: ${message.message}`;
+        li.appendChild(span);
+        if (message.username === username) {
+          li.classList.add('user-message');
+        } else {
+          li.classList.add('other-message');
+        }
+        messages.appendChild(li);
+      });
+    });
+
+    socket.on('update users', function(userList) {
+      const userListElement = document.getElementById('user-list');
+      userListElement.innerHTML = '';
+      userList.forEach(user => {
+        const li = document.createElement('li');
+        const otherOrMe = user.username === username ? 'me' : '';
+        li.innerHTML = `<span class="status-icon"></span> ${otherOrMe ? '[You]' : ''} ${user.username}`;
+        li.classList.add('online'); // Assume all users are online for simplicity
+        userListElement.appendChild(li);
+      });
+    });
+
+    function logout() {
+      localStorage.removeItem('username');
+      location.reload();
+    }
+
+    // "\" Key hard resets local storage
+    document.addEventListener('keydown', function(e) {
+      if (e.key === '\\') localStorage.clear(), location.reload();
+    });
+  </script>
+</body>
+
+</html>
